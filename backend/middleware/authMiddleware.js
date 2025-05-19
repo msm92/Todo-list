@@ -1,15 +1,17 @@
-const jwt = require('jsonwebtiken');
-exports.authMiddleware = (req , res , next) => {
-    let token = req.header.("x-auth-token")
+const jwt = require("jsonwebtoken");
+module.exports = (req, res, next) => {
+    let token = req.header("x-auth-token");
+    console.log(token);
 
-    if (token) {
-        res.status(401).json({code: 0, msg: 'token not exist'})
+    if (!token) {
+        return res.status(401).json({ code: 0, msg: "token not exist" });
     }
 
     try {
-        const decoded = jwt.verify(token , ProcessingInstruction.env.JWT_SECRET)
-        req.user = decoded.user
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded.user;
+        next();
     } catch (error) {
-        res.status(402).json({code: 0 , msg: 'token not valid'})
+        res.status(402).json({ code: 0, msg: "token not valid" });
     }
-}
+};
