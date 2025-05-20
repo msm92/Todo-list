@@ -9,5 +9,6 @@ const auth = require("../middleware/authMiddleware");
  */
 router.get("/", auth, taskController.getTasks);
 router.post("/", auth, taskController.createTask);
+router.put("/edit/:id", auth, taskController.edit);
 
 module.exports = router;
